@@ -5,7 +5,14 @@ const { calculateAnalytics } = require('../utils/analytics');
 // Submit response (public - no auth required)
 exports.submitResponse = async (req, res) => {
   try {
-    const { answers } = req.body;
+    const { answers, respondentInfo } = req.body;
+    
+    // Validate respondent info
+    if (!respondentInfo || !respondentInfo.name || !respondentInfo.email || !respondentInfo.school) {
+      return res.status(400).json({ 
+        message: 'Respondent information is required (name, email, school)' 
+      });
+    }
     
     // Find survey by public link
     const survey = await Survey.findOne({ publicLink: req.params.publicLink });
@@ -21,6 +28,7 @@ exports.submitResponse = async (req, res) => {
     // Create response
     const response = new Response({
       surveyId: survey._id,
+      respondentInfo,
       answers
     });
 

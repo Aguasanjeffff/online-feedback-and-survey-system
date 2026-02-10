@@ -6,7 +6,7 @@ const answerSchema = new mongoose.Schema({
     required: true
   },
   answer: {
-    type: mongoose.Schema.Types.Mixed, // Can be String, Number, or Array
+    type: mongoose.Schema.Types.Mixed,
     required: true
   }
 });
@@ -16,6 +16,34 @@ const responseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Survey',
     required: true
+  },
+  // ADD RESPONDENT INFORMATION
+  respondentInfo: {
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true
+    },
+    school: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    age: {
+      type: Number,
+      required: false
+    },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female', 'Other', 'Prefer not to say'],
+      required: false
+    }
   },
   answers: [answerSchema],
   submittedAt: {
